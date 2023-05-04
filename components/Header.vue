@@ -1,14 +1,18 @@
 <template>
   <header class="header">
-    <img class="logo" src="/images/logo.png" alt="Logo" />
+    <nuxt-link to="/">
+      <img class="logo" src="/images/logo.png" alt="Logo" />
+    </nuxt-link>
     スマホでフェス一周スタンプラリー
     <div class="menu">
       <button @click="toggleMenu" class="menu-button">☰</button>
-      <nav class="dropdown-menu" v-show="menuVisible">
+      <nav class="dropdown-menu" v-show="menuVisible" @click="toggleMenu">
         <ul>
           <li><a href="#">Menu Item 1</a></li>
           <li><a href="#">Menu Item 2</a></li>
-          <li><a href="#">Menu Item 3</a></li>
+          <li>
+            <nuxt-link to="/debug"><a href="#">debug</a></nuxt-link>
+          </li>
         </ul>
       </nav>
     </div>

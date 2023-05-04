@@ -3,7 +3,7 @@
  */
 export class RepositoryBase {
   static save(key: string, data: object) {
-    localStorage.setItem(this.name, JSON.stringify(data));
+    localStorage.setItem(key, JSON.stringify(data));
   }
   static load(key: string) {
     const data = localStorage.getItem(key);

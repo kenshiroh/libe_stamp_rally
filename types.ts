@@ -9,4 +9,5 @@ export interface Group {
   id: number;
   name: string;
   stamps: Stamp[];
+  isPrizeCollected: boolean;
 }

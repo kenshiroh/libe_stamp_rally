@@ -4,6 +4,7 @@ export const STAMP_SETTING: Group[] = [
   {
     id: 1,
     name: "レッドグループ",
+    isPrizeCollected: false,
     stamps: [
       {
         id: 1,
@@ -40,6 +41,7 @@ export const STAMP_SETTING: Group[] = [
   {
     id: 2,
     name: "グリーングループ",
+    isPrizeCollected: false,
     stamps: [
       {
         id: 6,
@@ -76,6 +78,7 @@ export const STAMP_SETTING: Group[] = [
   {
     id: 3,
     name: "オレンジグループ",
+    isPrizeCollected: false,
     stamps: [
       {
         id: 11,
@@ -112,6 +115,7 @@ export const STAMP_SETTING: Group[] = [
   {
     id: 4,
     name: "パープルグループ",
+    isPrizeCollected: false,
     stamps: [
       {
         id: 16,
@@ -148,6 +152,7 @@ export const STAMP_SETTING: Group[] = [
   {
     id: 5,
     name: "ブルーグループ",
+    isPrizeCollected: false,
     stamps: [
       {
         id: 21,

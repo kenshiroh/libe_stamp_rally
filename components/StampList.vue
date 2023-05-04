@@ -9,10 +9,10 @@
           v-for="stamp in group.stamps"
           :key="stamp.id"
         >
-          <nuxt-link :to="`/stamps/${stamp.id}`">
+          <nuxt-link :to="`/stamps/${stamp.id}/`">
             <img
               class="stamp-image"
-              :src="`/images/stamps/${stamp.id}.jpg`"
+              :src="stampImageSrc(stamp)"
               alt="取得場所"
             />
             <br />
@@ -25,6 +25,7 @@
 </template>
 
 <script setup lang="ts">
+import StampId from "~/pages/stamps/[stampId].vue";
 import { useGroupStore } from "~/pinia";
 import { Group, Stamp } from "~/types";
 
@@ -38,6 +39,11 @@ const props = defineProps({
 });
 const shouldBeHighlighted = (stamp: Stamp) => {
   return stamp.id === props.highlightStampId;
+};
+const stampImageSrc = (stamp: Stamp) => {
+  return stamp.isCollected
+    ? `/images/stamps/${stamp.id}.jpg`
+    : `/images/stamps/empty.png`;
 };
 </script>
 

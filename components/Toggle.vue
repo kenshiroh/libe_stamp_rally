@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { defineComponent, PropType, ref } from "vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "ToggleButton",

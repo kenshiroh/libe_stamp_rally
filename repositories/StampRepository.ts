@@ -4,18 +4,32 @@ import { RepositoryBase } from "./RepositoryBase";
  * Stampの取得履歴を管理する
  */
 export class StampRepository extends RepositoryBase {
-  static markStampAcquired(stampId: number) {
-    const data = this.load("stampAcquired");
+  static markStampCollected(stampId: number) {
+    const data = this.load("stampCollected");
     if (data) {
       data[stampId] = true;
-      this.save("stampAcquired", data);
+      this.save("stampCollected", data);
     } else {
-      this.save("stampAcquired", { [stampId]: true });
+      this.save("stampCollected", { [stampId]: true });
     }
   }
 
-  static getStampAcquired(stampId: number) {
-    const data = this.load("stampAcquired");
+  static markStampNotCollected(stampId: number) {
+    const data = this.load("stampCollected");
+    if (data) {
+      data[stampId] = false;
+      this.save("stampCollected", data);
+    } else {
+      this.save("stampCollected", { [stampId]: true });
+    }
+  }
+
+  static resetStampCollected() {
+    this.save("stampCollected", {});
+  }
+
+  static getStampCollected(stampId: number) {
+    const data = this.load("stampCollected");
     if (data) {
       return data[stampId];
     }
