@@ -43,7 +43,9 @@ import PrizeExchangeModal from "~/components/PrizeExchangeModal.vue";
 const prizeExchangeModal = ref<typeof PrizeExchangeModal>();
 
 const store = useGroupStore();
-const groups = computed<Group[]>(() => store.groups);
+const groups = computed<Group[]>(
+  () => store.getGroupsOrderByStampCollectedTime
+);
 const props = defineProps({
   highlightStampId: {
     type: Number,
@@ -54,7 +56,7 @@ const shouldBeHighlighted = (stamp: Stamp) => {
   return stamp.id === props.highlightStampId;
 };
 const stampImageSrc = (stamp: Stamp) => {
-  return stamp.isCollected
+  return stamp.collectedTime
     ? `/images/stamps/${stamp.id}.jpg`
     : `/images/stamps/empty.png`;
 };
@@ -63,7 +65,7 @@ const openPrizeExchangeModal = (group: Group) => {
     prizeExchangeModal.value?.openModal(group);
   } else if (!store.isAllStampInGroupCollected(group.id)) {
     alert("グループ内のスタンプを全て集めると景品交換できます");
-  } else if (group.isPrizeCollected) {
+  } else if (group.collectedTime) {
     alert("景品は既に交換済みです");
   }
 };

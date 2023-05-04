@@ -5,8 +5,9 @@
   <!-- 全てのstampの取得有無とトグルをリストする -->
   <div v-for="stamp in stamps" :key="stamp.id">
     <span>{{ stamp.name }}</span>
+    <span v-if="stamp.collectedTime"> : {{ stamp.collectedTime }}</span>
     <Toggle
-      :isActive="stamp.isCollected"
+      :isActive="stamp.collectedTime"
       @update:isActive="store.toggleStampCollected(stamp.id)"
     />
   </div>
@@ -18,7 +19,7 @@
   <div v-for="group in store.groups" :key="group.id">
     <span>{{ group.name }}</span>
     <Toggle
-      :isActive="group.isPrizeCollected"
+      :isActive="group.collectedTime"
       @update:isActive="store.togglePrizeCollected(group.id)"
     />
   </div>

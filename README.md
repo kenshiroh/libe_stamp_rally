@@ -1,29 +1,27 @@
-# Nuxt 3 Minimal Starter
+# スタンプラリーシステム
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Pre Requisite
+
+- NodeJS 18.0.0 over
 
 ## Setup
 
-Make sure to install the dependencies:
-
 ```bash
-# yarn
-yarn install
-
-# npm
 npm install
-
-# pnpm
-pnpm install
 ```
 
 ## Development Server
 
-Start the development server on `http://localhost:3000`
-
 ```bash
 npm run dev
 ```
+
+## Access
+
+- stamp list
+  `http://localhost:3000`
+- get stamp
+  `http://localhost:3000/stamps/1/collect`
 
 ## Production
 
@@ -38,5 +36,3 @@ Locally preview production build:
 ```bash
 npm run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

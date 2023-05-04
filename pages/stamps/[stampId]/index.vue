@@ -12,7 +12,7 @@
       v-if="locationImage"
     />
     <p>ブースの内容説明: {{ stamp?.description }}</p>
-    <p>取得有無: {{ stamp?.isCollected ? "取得済み" : "未取得" }}</p>
+    <p>取得有無: {{ stamp?.collectedTime ? "取得済み" : "未取得" }}</p>
   </div>
 </template>
 
@@ -23,7 +23,6 @@ import { useGroupStore } from "~/pinia";
 import { Group, Stamp } from "~/types";
 
 const route = useRoute();
-const router = useRouter();
 const groupStore = useGroupStore();
 
 const stampId = ref<number>(parseInt(route.params.stampId as string));

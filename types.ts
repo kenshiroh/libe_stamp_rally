@@ -2,12 +2,12 @@ export interface Stamp {
   id: number;
   name: string;
   description: string;
-  isCollected: boolean;
+  collectedTime?: Date;
 }
 
 export interface Group {
   id: number;
   name: string;
   stamps: Stamp[];
-  isPrizeCollected: boolean;
+  collectedTime?: Date;
 }

@@ -8,8 +8,12 @@
       <button @click="toggleMenu" class="menu-button">☰</button>
       <nav class="dropdown-menu" v-show="menuVisible" @click="toggleMenu">
         <ul>
-          <li><a href="#">Menu Item 1</a></li>
-          <li><a href="#">Menu Item 2</a></li>
+          <li>
+            <nuxt-link to="/guide/1"><a href="#">利用方法</a></nuxt-link>
+          </li>
+          <li>
+            <nuxt-link to="/caution"><a href="#">注意事項</a></nuxt-link>
+          </li>
           <li>
             <nuxt-link to="/debug"><a href="#">debug</a></nuxt-link>
           </li>

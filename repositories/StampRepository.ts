@@ -5,13 +5,15 @@ import { RepositoryBase } from "./RepositoryBase";
  */
 export class StampRepository extends RepositoryBase {
   static markStampCollected(stampId: number) {
+    const now = new Date();
     const data = this.load("stampCollected");
     if (data) {
-      data[stampId] = true;
+      data[stampId] = now;
       this.save("stampCollected", data);
     } else {
-      this.save("stampCollected", { [stampId]: true });
+      this.save("stampCollected", { [stampId]: now });
     }
+    return now;
   }
 
   static markStampNotCollected(stampId: number) {
@@ -20,7 +22,7 @@ export class StampRepository extends RepositoryBase {
       data[stampId] = false;
       this.save("stampCollected", data);
     } else {
-      this.save("stampCollected", { [stampId]: true });
+      this.save("stampCollected", { [stampId]: false });
     }
   }
 

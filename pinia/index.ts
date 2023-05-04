@@ -15,9 +15,16 @@ const getStamps = (groups: Group[]) => {
 
 const isAllStampInGroupCollected = (group: Group) => {
   if (group) {
-    return group.stamps.every((stamp) => stamp.isCollected);
+    return group.stamps.every((stamp) => stamp.collectedTime);
   }
   return false;
+};
+
+const latestStampCollectedTime = (group: Group) => {
+  const stamps = group.stamps.filter((stamp) => stamp.collectedTime);
+  const collectedTimeList = stamps.map((stamp) => stamp.collectedTime);
+  const latestCollectedTime = _.max(collectedTimeList);
+  return latestCollectedTime;
 };
 
 export const useGroupStore = defineStore("group", {
@@ -25,6 +32,23 @@ export const useGroupStore = defineStore("group", {
     groups: _.cloneDeep(STAMP_SETTING),
   }),
   getters: {
+    getGroupsOrderByStampCollectedTime: (state: State) => {
+      const result = state.groups.slice();
+      return result.sort((a, b) => {
+        const aLatestCollectedTime = latestStampCollectedTime(a);
+        const bLatestCollectedTime = latestStampCollectedTime(b);
+        if (aLatestCollectedTime && bLatestCollectedTime) {
+          return aLatestCollectedTime > bLatestCollectedTime ? -1 : 1;
+        }
+        if (aLatestCollectedTime) {
+          return -1;
+        }
+        if (bLatestCollectedTime) {
+          return 1;
+        }
+        return 0;
+      });
+    },
     getGroupById: (state: State) => (groupId: number) => {
       return state.groups.find((group) => group.id === groupId);
     },
@@ -44,7 +68,7 @@ export const useGroupStore = defineStore("group", {
     isPrizeCollectable: (state: State) => (groupId: number) => {
       const group = state.groups.find((group) => group.id === groupId);
       if (group) {
-        return isAllStampInGroupCollected(group) && !group.isPrizeCollected;
+        return isAllStampInGroupCollected(group) && !group.collectedTime;
       }
       return false;
     },
@@ -54,10 +78,10 @@ export const useGroupStore = defineStore("group", {
       this.groups = _.cloneDeep(STAMP_SETTING);
       const stamps = getStamps(this.groups);
       stamps.forEach((stamp) => {
-        stamp.isCollected = StampRepository.getStampCollected(stamp.id);
+        stamp.collectedTime = StampRepository.getStampCollected(stamp.id);
       });
       this.groups.forEach((group) => {
-        group.isPrizeCollected = PrizeRepository.getPrizeCollected(group.id);
+        group.collectedTime = PrizeRepository.getPrizeCollected(group.id);
       });
     },
     resetAllStamps() {
@@ -67,19 +91,17 @@ export const useGroupStore = defineStore("group", {
     setStampCollected(id: number) {
       const stamp = getStamps(this.groups).find((stamp) => stamp.id === id);
       if (stamp) {
-        StampRepository.markStampCollected(id);
-        stamp.isCollected = true;
+        stamp.collectedTime = StampRepository.markStampCollected(id);
       }
     },
     toggleStampCollected(id: number) {
       const stamp = getStamps(this.groups).find((stamp) => stamp.id === id);
       if (stamp) {
-        if (stamp.isCollected) {
+        if (stamp.collectedTime) {
           StampRepository.markStampNotCollected(id);
-          stamp.isCollected = false;
+          stamp.collectedTime = undefined;
         } else {
-          StampRepository.markStampCollected(id);
-          stamp.isCollected = true;
+          stamp.collectedTime = StampRepository.markStampCollected(id);
         }
       }
     },
@@ -90,19 +112,17 @@ export const useGroupStore = defineStore("group", {
     setPrizeCollected(id: number) {
       const group = this.groups.find((group) => group.id === id);
       if (group) {
-        PrizeRepository.markPrizeCollected(id);
-        group.isPrizeCollected = true;
+        group.collectedTime = PrizeRepository.markPrizeCollected(id);
       }
     },
     togglePrizeCollected(id: number) {
       const group = this.groups.find((group) => group.id === id);
       if (group) {
-        if (group.isPrizeCollected) {
+        if (group.collectedTime) {
           PrizeRepository.markPrizeNotCollected(id);
-          group.isPrizeCollected = false;
+          group.collectedTime = undefined;
         } else {
-          PrizeRepository.markPrizeCollected(id);
-          group.isPrizeCollected = true;
+          group.collectedTime = PrizeRepository.markPrizeCollected(id);
         }
       }
     },

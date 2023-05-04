@@ -5,13 +5,15 @@ import { RepositoryBase } from "./RepositoryBase";
  */
 export class PrizeRepository extends RepositoryBase {
   static markPrizeCollected(groupId: number) {
+    const now = new Date();
     const data = this.load("prizeCollected");
     if (data) {
       data[groupId] = true;
       this.save("prizeCollected", data);
     } else {
-      this.save("prizeCollected", { [groupId]: true });
+      this.save("prizeCollected", { [groupId]: now });
     }
+    return now;
   }
 
   static markPrizeNotCollected(groupId: number) {
