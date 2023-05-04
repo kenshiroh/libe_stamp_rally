@@ -1,7 +1,7 @@
 <template>
   <div class="group-list">
     <h2>スタンプグループ一覧</h2>
-    <div v-for="group in groups" :key="group.id">
+    <div v-for="group in groups" :key="group.id" class="stamp-group">
       <h3 class="group-header">{{ group.name }}</h3>
       <div class="group-container">
         <div
@@ -20,14 +20,27 @@
           </nuxt-link>
         </div>
       </div>
+      <!-- 景品取得ボタン -->
+      <button
+        :class="{
+          'get-prize-button': true,
+          disabled: !store.isPrizeCollectable(group.id),
+        }"
+        @click="openPrizeExchangeModal(group)"
+      >
+        景品を取得する
+      </button>
     </div>
+    <PrizeExchangeModal ref="prizeExchangeModal" />
   </div>
 </template>
 
 <script setup lang="ts">
-import StampId from "~/pages/stamps/[stampId].vue";
 import { useGroupStore } from "~/pinia";
 import { Group, Stamp } from "~/types";
+import PrizeExchangeModal from "~/components/PrizeExchangeModal.vue";
+
+const prizeExchangeModal = ref<typeof PrizeExchangeModal>();
 
 const store = useGroupStore();
 const groups = computed<Group[]>(() => store.groups);
@@ -45,6 +58,15 @@ const stampImageSrc = (stamp: Stamp) => {
     ? `/images/stamps/${stamp.id}.jpg`
     : `/images/stamps/empty.png`;
 };
+const openPrizeExchangeModal = (group: Group) => {
+  if (store.isPrizeCollectable(group.id)) {
+    prizeExchangeModal.value?.openModal(group);
+  } else if (!store.isAllStampInGroupCollected(group.id)) {
+    alert("グループ内のスタンプを全て集めると景品交換できます");
+  } else if (group.isPrizeCollected) {
+    alert("景品は既に交換済みです");
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -58,8 +80,13 @@ const stampImageSrc = (stamp: Stamp) => {
   }
 }
 .group-list {
-  .group-header {
+  .stamp-group {
     text-align: center;
+  }
+  .get-prize-button {
+    &.disabled {
+      opacity: 0.4;
+    }
   }
   .group-container {
     margin-bottom: 20px;

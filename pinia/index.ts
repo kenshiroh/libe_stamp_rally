@@ -13,30 +13,38 @@ const getStamps = (groups: Group[]) => {
   return groups.map((group) => group.stamps).flat();
 };
 
+const isAllStampInGroupCollected = (group: Group) => {
+  if (group) {
+    return group.stamps.every((stamp) => stamp.isCollected);
+  }
+  return false;
+};
+
 export const useGroupStore = defineStore("group", {
   state: (): State => ({
     groups: _.cloneDeep(STAMP_SETTING),
   }),
   getters: {
-    getGroupById: (state: State) => (id: number) => {
-      return state.groups.find((group) => group.id === id);
+    getGroupById: (state: State) => (groupId: number) => {
+      return state.groups.find((group) => group.id === groupId);
     },
-    getStampById: (state: State) => (id: number) => {
+    getStampById: (state: State) => (stampId: number) => {
       return state.groups
         .map((group) => group.stamps)
         .flat()
-        .find((stamp) => stamp.id === id);
+        .find((stamp) => stamp.id === stampId);
     },
     getStamps: (state: State) => {
       return getStamps(state.groups);
     },
-    isPrizeCollectable: (state: State) => (id: number) => {
-      const group = state.groups.find((group) => group.id === id);
+    isAllStampInGroupCollected: (state: State) => (groupId: number) => {
+      const group = state.groups.find((group) => group.id === groupId);
+      return group && isAllStampInGroupCollected(group);
+    },
+    isPrizeCollectable: (state: State) => (groupId: number) => {
+      const group = state.groups.find((group) => group.id === groupId);
       if (group) {
-        const allStampCollected = group.stamps.every(
-          (stamp) => stamp.isCollected
-        );
-        return allStampCollected && !group.isPrizeCollected;
+        return isAllStampInGroupCollected(group) && !group.isPrizeCollected;
       }
       return false;
     },
