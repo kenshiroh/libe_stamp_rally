@@ -1,3 +1,5 @@
+import { defineNuxtConfig } from "@nuxt/bridge";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ["@pinia/nuxt"],
@@ -12,4 +14,5 @@ export default defineNuxtConfig({
     client: true,
     server: true,
   },
+  ssr: false,
 });
